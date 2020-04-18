@@ -192,6 +192,7 @@ TEST_F(ServerEvaluateShot, Out_Of_Bounds_Y_High){
 }
 
 TEST_F(ServerEvaluateShot, Out_Of_Bounds_Y_Low){
+
     ASSERT_EQ(OUT_OF_BOUNDS, srv.evaluate_shot(1,1,-1));
 }
 

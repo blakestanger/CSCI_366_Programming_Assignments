@@ -36,3 +36,4 @@ get_bit_elem:
         mov rsp, rbp        ; restore stack pointer to before we pushed parameters onto the stack
         pop rbp             ; remove rbp from the stack to restore rsp to initial value
         ret                 ; return value in rax
+

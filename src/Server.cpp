@@ -116,6 +116,13 @@ BitArray2D *Server::scan_setup_board(string setup_board_name){
 
 }
 
+Server::~Server() {
+}
+
+
+BitArray2D *Server::scan_setup_board(string setup_board_name){
+}
+
 int Server::evaluate_shot(unsigned int player, unsigned int x, unsigned int y) {
     /**
     * Checks the coordinates of a shot against setup board of player

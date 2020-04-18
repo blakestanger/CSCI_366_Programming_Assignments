@@ -108,3 +108,4 @@ public:
 
 
 #endif //BATTLESHIP_BIT_ARRAY_HPP
+

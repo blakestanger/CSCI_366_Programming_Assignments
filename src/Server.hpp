@@ -57,9 +57,10 @@ public:
 
 class Server{
 public:
-   int board_size;
+   unsigned int board_size;
 
 private:
+
    BitArray2D *p1_setup_board = nullptr;
    BitArray2D *p2_setup_board = nullptr;
 
@@ -71,7 +72,6 @@ private:
 
 
     BitArray2D *scan_setup_board(string setup_board_name);
-
 public:
    /**
     * Performs Server initialization
@@ -111,8 +111,13 @@ public:
    int process_shot(unsigned int player);
 
    /**
+<<<<<<< HEAD
     * Deallocates Server memory.
     */
 
+=======
+    * Deallocates Server memory
+    */
+>>>>>>> ec79d6892f73ed95680b74ce87f2c56a52566fbf
    ~Server();
 };
