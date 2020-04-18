@@ -44,7 +44,7 @@ void Server::initialize(unsigned int board_size,
 //    /mnt/c/Users/blake/Documents/CSCI_366_Programming_Assignments/test/tests.cpp:65: Failure
 //    Expected: srv.initialize(10, "player_1.setup_board.txt", "player_2.setup_board.txt") doesn't throw an exception.
 //    Actual: it throws std::exception-derived exception with description: "Incorrect board size".
-//todo figure out what the F*** this means.
+
 
     int file_length = 0;
     int file_length2 = 0;
@@ -56,6 +56,8 @@ void Server::initialize(unsigned int board_size,
     if(!this->p1_setup_board.good()){
         throw std::runtime_error("Unable to open P1 Board");
     }
+
+
 
     while(this->p1_setup_board>>line) {
 
@@ -109,6 +111,11 @@ void Server::initialize(unsigned int board_size,
     this->p2_setup_board.close();
 
 }
+
+BitArray2D *Server::scan_setup_board(string setup_board_name){
+
+}
+
 int Server::evaluate_shot(unsigned int player, unsigned int x, unsigned int y) {
     /**
     * Checks the coordinates of a shot against setup board of player
