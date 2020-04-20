@@ -1,0 +1,11 @@
+Here is a link directly to the commit. 
+
+https://github.com/blakestanger/CSCI_366_Programming_Assignments/commit/594da3bc186942189c162c544e72a0e7ad24e7c1
+
+branch
+
+https://github.com/blakestanger/CSCI_366_Programming_Assignments/tree/PA1_Basic_Battleship 
+
+to the fork-
+
+https://github.com/blakestanger/CSCI_366_Programming_Assignments
