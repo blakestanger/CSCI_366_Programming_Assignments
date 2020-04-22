@@ -17,7 +17,11 @@
 
 #include "common.hpp"
 #include "Server.hpp"
-
+#include <iostream>
+#include <cereal/archives/json.hpp>
+#include <cereal/types/vector.hpp>
+#include <string>
+#include <vector>
 
 /**
  * Calculate the length of a file (helper function)
@@ -25,45 +29,40 @@
  * @param file - the file whose length we want to query
  * @return length of the file in bytes
  */
-int get_file_length(ifstream *file){
-    std:: streampos fsize = 0;
-    fsize = file->tellg();
-    file->seekg( 0, std::ios::end);
-    fsize = file->tellg() - fsize;
-    file->close();
-    return fsize;
-
-    // I never really used this.
-}
+//int get_file_length(ifstream *file){
+//}
 
 
 void Server::initialize(unsigned int board_size,
                         string p1_setup_board,
                         string p2_setup_board){
 
-//    /mnt/c/Users/blake/Documents/CSCI_366_Programming_Assignments/test/tests.cpp:65: Failure
-//    Expected: srv.initialize(10, "player_1.setup_board.txt", "player_2.setup_board.txt") doesn't throw an exception.
-//    Actual: it throws std::exception-derived exception with description: "Incorrect board size".
+    this->board_size = board_size;
+//    this->p1_setup_board =scan_setup_board(p1_setup_board);
+//    this->p2_setup_board = scan_setup_board(p2_setup_board);
+//
+////    /mnt/c/Users/blake/Documents/CSCI_366_Programming_Assignments/test/tests.cpp:65: Failure
+////    Expected: srv.initialize(10, "player_1.setup_board.txt", "player_2.setup_board.txt") doesn't throw an exception.
+////    Actual: it throws std::exception-derived exception with description: "Incorrect board size".
 
 
     int file_length = 0;
     int file_length2 = 0;
     string line;
     string different_line;
-
-
-   this->p1_setup_board->open(p1_setup_board);
-    if(!this->p1_setup_board.good()){
-        throw std::runtime_error("Unable to open P1 Board");
-    }
+ifstream sasquatch;
+sasquatch.open(p1_setup_board);
+if (!sasquatch){ throw ServerException("Unable to open P1 Board");}
 
 
 
-    while(this->p1_setup_board>>line) {
+
+    while(sasquatch>>line) {
 
        // cout << line << line.length();
 
-        if (line.length() == board_size + 2 || line.length() == board_size) {
+        if (line.length()== board_size) {
+
 
             file_length++;
 
@@ -81,16 +80,14 @@ void Server::initialize(unsigned int board_size,
 
    //https://stackoverflow.com/questions/3482064/counting-the-number-of-lines-in-a-text-file
     //conversation with cooper.
-    this->p1_setup_board.close();
+    sasquatch.close();
+
+    sasquatch.open(p2_setup_board);
+    if(!sasquatch){throw ServerException("Bad P2 Setupboard");}
 
 
-    this->p2_setup_board.open(p2_setup_board);
-    if(!this->p2_setup_board.good()){
-        throw std::runtime_error("Unable to open P2 Board");
-    }
 
-
-    while(this->p2_setup_board>>different_line) {
+    while(sasquatch>> different_line) {
 
         if (different_line.length() == board_size) {
 
@@ -108,29 +105,28 @@ void Server::initialize(unsigned int board_size,
 
         //ok to assign board size now
         this->board_size = board_size;
-    this->p2_setup_board.close();
-
+    sasquatch.close();
 }
 
-BitArray2D *Server::scan_setup_board(string setup_board_name){
-
-}
 
 Server::~Server() {
 }
 
 
+BitArray2D *Server::scan_setup_board(string setup_board_name){
+}
+
 int Server::evaluate_shot(unsigned int player, unsigned int x, unsigned int y) {
     /**
-    * Checks the coordinates of a shot against setup board of player
-    *
-    * Check that player number within bounds, checks that shot coordinates within bounds, determines if the shot
-    * results in a HIT, or a MISS.
-    * @param player - player number
-    * @param x - coordinate
-    * @param y - coordinate
-    * @return returns shot result as either HIT, MISS, or OUT_OF_BOUNDS
-    */
+//    * Checks the coordinates of a shot against setup board of player
+//    *
+//    * Check that player number within bounds, checks that shot coordinates within bounds, determines if the shot
+//    * results in a HIT, or a MISS.
+//    * @param player - player number
+//    * @param x - coordinate
+//    * @param y - coordinate
+//    * @return returns shot result as either HIT, MISS, or OUT_OF_BOUNDS
+//    */
 
 
 
@@ -155,7 +151,9 @@ int Server::evaluate_shot(unsigned int player, unsigned int x, unsigned int y) {
     switch (player) {
         case 2: {
             string line_length;
-            this->p1_setup_board >> line_length;
+            fstream ANOTHER_SQUWATCH;
+            ANOTHER_SQUWATCH.open("player_1.setup_board.text");
+            ANOTHER_SQUWATCH >> line_length;
             int spot = (((line_length.length()-1 * y)) + x);
             int i = 0;
 
@@ -167,13 +165,13 @@ int Server::evaluate_shot(unsigned int player, unsigned int x, unsigned int y) {
 //                }
 //
 //            }
-            p1_setup_board.open("player_1.setup_board.txt");
-            p1_setup_board.seekg(spot, ios::beg);
+
+            ANOTHER_SQUWATCH.seekg(spot, ios::beg);
             char at_position[2];
-            p1_setup_board.read(at_position, 1);
+            ANOTHER_SQUWATCH.read(at_position, 1);
             at_position[1]=0;
 
-            p1_setup_board.close();
+            ANOTHER_SQUWATCH.close();
 
             //cout<<at_position<<"ATPOSITIOS"<<endl;
 
@@ -190,22 +188,23 @@ int Server::evaluate_shot(unsigned int player, unsigned int x, unsigned int y) {
         }
         case 1: {
             string HEAVY_METAL_BAND;
-            this->p2_setup_board.open("player_2.setup_board.txt");
+            fstream YETI;
+            YETI.open("player_2.setup_board.txt");
 
-            if(!p2_setup_board.good()){throw ServerException("900");}
-            p2_setup_board >> HEAVY_METAL_BAND;
+            if(!YETI.good()){throw ServerException("900");}
+            YETI >> HEAVY_METAL_BAND;
             int spoter = (((HEAVY_METAL_BAND.length()-1) * y) + x);
             int i = 0;
 
 
 
-            p2_setup_board.seekg(spoter, ios::beg);
+            YETI.seekg(spoter, ios::beg);
             char at_position2[2];
 
-            p2_setup_board.read(at_position2, 1);
+            YETI.read(at_position2, 1);
             at_position2[5];
             //cout<<spoter<<"SPOT"<<x<<'X'<<y<<'y'<<at_position2<<"ATPOSITION"<<"LINELENGTH:"<<HEAVY_METAL_BAND.length()<<endl;
-            p2_setup_board.close();
+            YETI.close();
 
             while (i <= 4) {
                 if (SHIPS[i] == at_position2[0]) {
@@ -225,9 +224,8 @@ int Server::evaluate_shot(unsigned int player, unsigned int x, unsigned int y) {
 }
 
 
+
 int Server::process_shot(unsigned int player) {
-
-
     int playercheck = player;
     /**
    * Processes a shot issued by player
@@ -341,11 +339,9 @@ int Server::process_shot(unsigned int player) {
 
 
         return SHOT_FILE_PROCESSED;
-    }
 
 
 
-
-
+}
 
 

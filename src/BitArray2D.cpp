@@ -19,10 +19,16 @@
 
 BitArray2D::BitArray2D(unsigned int rows, unsigned int columns) {
 
-    if ((rows<1)||(rows>10))throw std::runtime_error("BitArray rows out of bounds");
-    if ((columns<1)||(columns>10)) throw std::runtime_error("BitArray columns out of bounds");
+    if ((rows<1)||(columns <1))throw BitArray2DException("BitArray rows out of bounds");
 
 
+    int holder = ceil(((double)rows * columns)/8);
+    this->rows = rows;
+    this->columns = columns;
+    //array = new char[((rows*columns)/8)+1];
+
+    // setting the size of the character array and allocating memory
+    this->array = (char*) calloc(holder, sizeof(char));
 }
 
 
@@ -33,8 +39,8 @@ BitArray2D::~BitArray2D() {
 
 bool BitArray2D::get(unsigned int row, unsigned int column){
     // check array bounds
-    if ((row<1)||(row>=10))throw std::runtime_error("BitArray rows out of bounds");
-    if ((column<1)||(column>=10)) throw std::runtime_error("BitArray columns out of bounds");
+    if ((row<0)||(rows <= row))throw BitArray2DException("BitArray rows out of bounds");
+    if ((column<0)||(columns <= column)) throw BitArray2DException("BitArray columns out of bounds");
 
     // get the element
     return get_bit_elem(array, columns, row, column);
@@ -44,8 +50,9 @@ bool BitArray2D::get(unsigned int row, unsigned int column){
 
 void BitArray2D::set(unsigned int row, unsigned int column){
 
-    if ((row<1)||(row>=10))throw std::runtime_error("BitArray row out of bounds");
-    if ((column<1)||(column>=10)) throw std::runtime_error("BitArray column out of bounds");
+    if ((row<0)||(rows <= row))throw BitArray2DException("BitArray rows out of bounds");
+    if ((column<0)||(columns <= column)) throw BitArray2DException("BitArray columns out of bounds");
+
 
 
     // check array bounds

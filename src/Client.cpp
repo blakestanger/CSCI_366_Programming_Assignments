@@ -16,12 +16,20 @@
 
 #include "common.hpp"
 #include "Client.hpp"
+#include "Server.hpp"
+#include <fstream>
+#include <cereal/archives/json.hpp>
+#include <cereal/types/vector.hpp>
+#include <iostream>
+#include <string>
+#include <vector>
 
 Client::~Client() {
-
 }
 
-void Client::initialize(unsigned int player, unsigned int board_size) {
+
+void Client::initialize(unsigned int player, unsigned int board_size){
+
     string make_player_to_string = to_string(player);
     string nameofaDEMON = "player_" + make_player_to_string + ".action_board.json";
 
@@ -47,10 +55,10 @@ void Client::initialize(unsigned int player, unsigned int board_size) {
 
         initialized = true;
 
-    }
+}
+
 
 void Client::fire(unsigned int x, unsigned int y) {
-
     if(x> board_size || y > board_size || x < 0 || y < 0) {
         throw ClientException("HEXES AND VYES ARE OUT OF LINE");
     }
@@ -76,34 +84,34 @@ void Client::fire(unsigned int x, unsigned int y) {
 
 
     }
-
 }
 
 
 bool Client::result_available() {
     /**
-   * Checks if a result file is available for
-   * @return true if result is available, false otherwise
-   */
+//   * Checks if a result file is available for
+//   * @return true if result is available, false otherwise
+//   */
     string name = "player_";
     name.append(to_string(player));
     name.append(".result.json");
 
     std::ifstream f;
     f.open(name);
-    if (f.good()){
+    if (f.good()) {
         return true;
-    }else{
+    } else {
         return false;
+
     }
 }
 
 
 int Client::get_result() {
     /**
- * Gets the result from the player_#.result.json
- * @return the result as either HIT, MISS, or OUT_OF_BOUNDS
- */
+// * Gets the result from the player_#.result.json
+// * @return the result as either HIT, MISS, or OUT_OF_BOUNDS
+// */
 
     int HIT_or_MISS_or_OUTOFBOUNDS;
 
@@ -126,7 +134,7 @@ int Client::get_result() {
     remove(name.c_str());
 
 
-   // https://stackoverflow.com/questions/28162563/c-code-to-test-for-positive-negative-using-switch-and
+    // https://stackoverflow.com/questions/28162563/c-code-to-test-for-positive-negative-using-switch-and
 
     switch(HIT_or_MISS_or_OUTOFBOUNDS) {
 
@@ -175,12 +183,12 @@ void Client::update_action_board(int result, unsigned int x, unsigned int y) {
     cereal::JSONOutputArchive headingOut(outf);
     headingOut(CEREAL_NVP(board));
 
+
 }
 
 
 string Client::render_action_board(){
-
-   // char render_array[10][10];
+ char render_array[10][10];
 
    //cant use char_array have to use vector/.
 

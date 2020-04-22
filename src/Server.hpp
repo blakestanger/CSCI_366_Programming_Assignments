@@ -26,6 +26,8 @@
 
 #include "BitArray2D.hpp"
 
+
+
 #define SHOT_FILE_PROCESSED 0
 #define NO_SHOT_FILE 1
 
